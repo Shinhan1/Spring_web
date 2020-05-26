@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+		
+<!-- 
+<bean class="kr.co.goott.control.RegisterController"></bean>
+<bean class="kr.co.goott.control.LoginController"></bean> 
+-->
+<!-- 컨트롤러를 스프링 프레임워크에 자동으로 Bean 등록하려고 할 때 -->
+<context:component-scan base-package="kr.co.goott.*">
+	<!-- <context:exclude-filter type="annotation" expression=""/>	이 부분은 이 패키지에서 제외해
+	<context:include-filter type="annotation" expression=""/>	이 부분은 이 패키지에 다 넣어짐 -->
+</context:component-scan>
+
+
+</beans>
