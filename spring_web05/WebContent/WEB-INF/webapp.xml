@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+
+<!-- SimpleUrlHandlerMapping : url을 통한 매핑시 context-path를 제외한 나머지 경로로 비교
+
+ex ) context-path : http://localhost:9090/spring_web05/hi.do   => http://localhost:9090/spring_web05/ 제외한 나머지 부분
+
+ - 경로 매핑 방식
+ 1. ? : 1개의 문자 매핑
+ 2. * : 0개 이상의 문자 매핑
+ 3. ** : 0개 이상의 디렉토리와 매핑 -->
+
+<bean id="SimpleUrlHandlerMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+	<property name="alwaysUseFullPath" value="true" />
+	<property name="mappings">
+		<props>
+			<prop key="/*.do">hi</prop>
+			<prop key="/**/*.do">test</prop>
+		</props>
+	
+	</property>
+</bean>
+
+
+<bean id="id" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"></bean>
+
+
+<bean id="InternalResourceViewResolve" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<property name="prefix" value="/WEB-INF/jsp/" />
+	<property name="suffix" value=".jsp" />
+
+</bean>
+
+<bean id="hi" class="kr.co.goott.spring_web05.Hicontroller"></bean>
+<bean id="test" class="kr.co.goott.spring_web05.TestController"></bean>
+
+
+</beans>
