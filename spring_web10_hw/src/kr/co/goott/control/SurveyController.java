@@ -15,12 +15,13 @@ public class SurveyController {
 	}
 	
 	@RequestMapping("/survey/survey.ok")
-	public String selectedOne(HttpServletRequest req, Model model) {
+	public String selectedOne(HttpServletRequest req) {
 		
 		String name = req.getParameter("rd");
 //		System.out.println(name);
 		
-		model.addAttribute("name", name);
+//		model.addAttribute("name", name);
+		req.setAttribute("name", name);
 		
 		return "surveySubmitted";
 	}

@@ -66,10 +66,10 @@ public class RegisterController {
 		return "welcome";
 	}
 	
-	@RequestMapping("/main")
-	public String processStep4() {
-		return "main";
-	}
+//	@RequestMapping("/main")
+//	public String processStep4() {
+//		return "main";
+//	}
 	
 	
 }

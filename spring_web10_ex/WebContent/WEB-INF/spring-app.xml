@@ -14,6 +14,9 @@
 -->
 <mvc:default-servlet-handler/>
 
+<!-- 요청 경로와 뷰 이름을 알 경우 -->
+<mvc:view-controller path="/main" view-name="main" />
+
 <mvc:view-resolvers>
 	<mvc:jsp prefix="/WEB-INF/views/" suffix=".jsp" />
 </mvc:view-resolvers>
