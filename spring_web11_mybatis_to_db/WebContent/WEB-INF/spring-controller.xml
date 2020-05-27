@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+<context:component-scan base-package="kr.co.goott.*"></context:component-scan>
+
+
+<bean id="dao" class="kr.co.goott.dao.MysqlDAO">
+	<property name="ss" ref="sqlSessionTemplate" />
+</bean>
+
+<!-- SqlSessionFactory -->
+<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean" >
+	<!-- DB 연결 정보 -->
+	<property name="configLocation" value="/WEB-INF/SqlMapConfig.xml" />
+	<property name="dataSource"  ref="dataSource"></property>
+</bean>
+
+<!-- 아래 ${driver} 이전 정보들이 어디에 있는지 컨테이너에게 알려주기 -->
+<bean id="property" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<property name="location" value="/WEB-INF/db.properties" />
+</bean>
+
+
+<!-- DB 연결 정보 : Bean등록 -->
+<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+	<property name="driverClass" value="${driver}" />
+	<property name="url" value="${url}" />
+	<property name="username" value="${username}" />
+	<property name="password" value="${password}" />
+	
+</bean>
+
+<!-- SqlSessionTemplate 객체 -->
+<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+	<!-- SqlSessionTemplate 객체는 생성자가 필요함 -->
+	<constructor-arg ref="sqlSessionFactoryBean"></constructor-arg>
+</bean>
+
+
+
+</beans>
