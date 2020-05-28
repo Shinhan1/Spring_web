@@ -1,0 +1,85 @@
+일반적으로 웹프로젝트는 3개의 레이어로 구성합니다
+Presentation Layer : UI 를 담당하는 구성요소들이 들어간다.
+Business Layer : 서비스 계층이라고도 하며, 고객의 요구사항을 반영하는 계층이며, 사용자의 환경이 아닌 기능적인 요구사항을 구현한 곳이다. 즉, 어떤 형태의 데이터가 필요하고, 반환될 것인지를 결정
+Data Access Layer : 흔히 Persistence Layer라고 하기도 하는데, 데이터 처리를 전문적으로 담당
+
+Data Access Layer 구성
+
+Data Access Layer는 DB와 연결해서 데이터를 가져오고 쓰는 역할을 합니다.
+DAO(Data Access Object)가 MyBatis를 호출하고 사용하는 구조로 만들어집니다!
+좀 더 세분화하면 아래와 같은 구성을 가집니다.
+
+MtBatis 연동을 위한 준비
+
+MyBatis 연동을 위해 준비해야할 것들이 많습니다!
+spring-jdbc, spring-test, MyBatis, mybatis-spring 추가
+먼저, MyBatis와의 연동을 위해 별도의 하위 모듈을 다운받아야합니다!
+MyBais : SQL Mapper 라이브러리, jdbc만을 사용해서 작업할 때보다 코드를 상당히 많이 줄어들어서 개발 속도를 향상시킴
+MyBatis-Spring : 스프링과 MyBatis를 연결시킴
+Spring-jdbc : DataSource에 필요한 클래스를 제공
+Spring-test : 스프링과 MyBatis가 정상적으로 연동되었는지 확인하는 용도
+
+pom.xml에 다음 문장을 추가해서 maven을 통해 다운을 받겠습니다.
+
+<!-- MyBatis -->
+<dependency>
+	<groupId>org.mybatis</groupId>				
+    <artifactId>mybatis</artifactId>
+	<version>3.4.1</version>
+</dependency>
+		
+<!-- MyBatis-Spring -->
+	<dependency>
+	<groupId>org.mybatis</groupId>
+	<artifactId>mybatis-spring</artifactId>
+	<version>1.3.0</version>
+</dependency>
+		
+<!-- spring-jdbc -->
+<dependency>
+	<groupId>org.springframework</groupId>
+	<artifactId>spring-jdbc</artifactId>
+	<version>${org.springframework-version}</version>
+</dependency>
+
+<!-- spring-test -->
+<dependency>
+	<groupId>org.springframework</groupId>
+	<artifactId>spring-test</artifactId>
+	<version>${org.springframework-version}</version>
+</dependency>
+
+
+Spring Project에서 root-context.xml 파일 추가 및 수정
+
+src/main/webapp/WEB-INF/spring/root-context.xml 파일은 STS가 스프링 프로젝트를 생성할 때 만들어 주는 가장 중요한 파일입니다~!
+이 파일은 스프링과 관련된 설정을 할 때, jsp와 관련이 없는 객체(bean)를 설정해주는 비즈니스 로직을 위한 설정입니다. 쉽게 말해서 웹 자원과 관련되지 않은 모든 자원의 설정을 위해 존재합니다.
+반면에, appServlet 폴더 내에 있는 servlet-context.xml 파일은 jsp와 관련 있는 객체(bean)를 설정해줍니다. (controller, MultipartResolver(파일 업로드), Interceptor(로그인) 등)
+
+root-context.xml 파일에서 스프링 프레임워크에 다양한 설정을 하기 위해서는 STS 상에서 Namespaces 탭을 이용해 사용 가능한 XML 태그의 폭을 넓혀 줘야합니다.
+MySQL과의 연결을 담당하는 DataSource 설정하기
+
+DataSource는 JDBC의 커넥션을 처리하는 기능을 가지고 있기 때문에 데이터베이스와의 연동 작업에 반드시 필요합니다!
+DataSource를 이용하면 좀 더 간단하게 DB에 접근할 수 있습니다!
+root-context.xml에 다음을 추가
+
+<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <property name="driverClassName" value="com.mysql.jdbc.Driver"></property> 
+    <property name="url" value="jdbc:mysql://35.200.109.72:3306/testdb?useSSL=false"></property>
+    <property name="username" value="root"></property>
+    <property name="password" value="비~밀"></property>
+</bean>
+
+dataSource는 jdbc를 통해 mysql에 접속할 수 있게하는 객체입니다!
+id라는 속성은 스피링 내에서 특정한 객체(빈)을 찾기 위해서 사용하는 일종의 가명이라고 생각하면됩니다~
+후에 이 값을 이용해서 다른 객체와 연결하는 모습을 볼 수 있습니다
+
+DataSource 테스트 진행
+
+스프링은 하나의 설정에 문제가 있다면 정상적으로 로딩이 되지 않기에 최대한 빨리 변경된 설정에 대해서는 테스트를 해야합니다!
+아까 추가한 spring-test 모듈을 이용하면 스프링을 WAS 상에서 동작시키지 않고도, 테스트를 진행할 수 있습니다.
+
+
+
+
+
